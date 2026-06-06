@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Kalender Jalur Prestasi PTN 2026–2027</title>
+  <style>
+    :root{
+      --bg:#070b16;
+      --bg2:#0b1020;
+      --panel:rgba(15, 22, 41, .82);
+      --panel-2:rgba(20, 29, 53, .92);
+      --text:#eef3ff;
+      --muted:#a8b3d6;
+      --line:rgba(255,255,255,.10);
+      --line-strong:rgba(255,255,255,.16);
+      --accent:#8ea8ff;
+      --accent-2:#78e6c0;
+      --warn:#ffd166;
+      --shadow:0 24px 70px rgba(0,0,0,.36);
+      --radius:22px;
+      --radius-lg:28px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 10% 8%, rgba(142,168,255,.18), transparent 20%),
+        radial-gradient(circle at 90% 0%, rgba(120,230,192,.10), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(255,209,102,.08), transparent 24%),
+        linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1520px;margin:0 auto;padding:24px 18px 42px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(16,24,45,.96), rgba(10,14,28,.90));
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .hero::before,
+    .hero::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      pointer-events:none;
+      filter: blur(2px);
+    }
+    .hero::before{inset:-80px auto auto -70px;width:220px;height:220px;background:radial-gradient(circle, rgba(142,168,255,.20), transparent 68%)}
+    .hero::after{inset:auto -80px -90px auto;width:280px;height:280px;background:radial-gradient(circle, rgba(120,230,192,.12), transparent 68%)}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.01em;
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size:clamp(30px, 4.2vw, 52px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+    }
+    .sub{
+      max-width:1040px;
+      color:#cfd8ff;
+      line-height:1.7;
+      font-size:15px;
+    }
+    .hero-actions{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top:18px;
+    }
+    .ghost-btn, .primary-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:700;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      transition:transform .18s ease, border-color .18s ease, background .18s ease;
+      will-change:transform;
+    }
+    .primary-btn{
+      background:linear-gradient(180deg, rgba(142,168,255,.22), rgba(142,168,255,.12));
+      border-color:rgba(142,168,255,.28);
+    }
+    .ghost-btn{background:rgba(255,255,255,.04)}
+    .ghost-btn:hover,.primary-btn:hover,.chip:hover,.badge:hover,.linkbtn:hover{transform:translateY(-1px)}
+    .topbar{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:14px;
+      margin:18px 0 18px;
+    }
+    .metric{
+      padding:16px 16px 15px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .metric .k{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .metric .v{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+    .metric .s{color:var(--muted);font-size:13px;line-height:1.45;margin-top:6px}
+    .toolbar{
+      position:sticky;
+      top:12px;
+      z-index:20;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      padding:14px;
+      margin: 12px 0 14px;
+      background:rgba(7,11,22,.58);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:calc(var(--radius) + 2px);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .input,.select,.toggle{
+      background:rgba(17,24,45,.94);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px 14px;
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .input{flex:1 1 340px; min-width:260px}
+    .select{min-width:210px;cursor:pointer}
+    .toggle{
+      cursor:pointer;user-select:none;
+      display:flex;gap:10px;align-items:center;font-weight:700;
+      white-space:nowrap;
+    }
+    .toggle input{accent-color:var(--accent)}
+    .toggle .mini{color:var(--muted);font-weight:600;font-size:12px}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin: 0 0 14px}
+    .chip{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .chip.active{
+      background:rgba(142,168,255,.15);
+      border-color:rgba(142,168,255,.34);
+      color:var(--text);
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .table-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-end;
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+    }
+    .table-head .title{font-weight:800;letter-spacing:-.02em}
+    .table-head .meta{color:var(--muted);font-size:13px;line-height:1.45;text-align:right}
+    .table-wrap{overflow:auto}
+    table{
+      width:100%;
+      min-width:1440px;
+      border-collapse:collapse;
+      background:rgba(15,22,41,.96);
+    }
+    thead th{
+      position:sticky; top:0; z-index:2;
+      text-align:left;
+      padding:14px 12px;
+      background:linear-gradient(180deg, rgba(20,30,55,.98), rgba(16,24,44,.98));
+      border-bottom:1px solid var(--line);
+      color:#dfe6ff;
+      font-size:12px;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    tbody td{
+      padding:14px 12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      vertical-align:top;
+      font-size:14px;
+      line-height:1.45;
+    }
+    tbody tr{
+      transition:background .16s ease, transform .16s ease;
+    }
+    tbody tr:hover{background:rgba(255,255,255,.03)}
+    .campus{font-weight:800;font-size:15px;letter-spacing:-.01em}
+    .route{color:var(--accent-2);font-weight:700;margin-top:4px}
+    .small{color:var(--muted);font-size:13px;margin-top:5px}
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(142,168,255,.14);
+      border:1px solid rgba(142,168,255,.28);
+      color:#e7ecff;
+      font-weight:700;
+      white-space:nowrap;
+      min-width:42px;
+    }
+    .badge.secondary{
+      background:rgba(120,230,192,.10);
+      border-color:rgba(120,230,192,.24);
+      color:#dcfff1;
+    }
+    .badge.dim{
+      background:rgba(255,255,255,.05);
+      border-color:var(--line);
+      color:var(--muted);
+    }
+    .linkbtn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:#fff;
+      font-weight:700;
+      white-space:nowrap;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .pill{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,209,102,.12);
+      border:1px solid rgba(255,209,102,.24);
+      color:#fff6d8;
+      font-size:12px;
+      font-weight:700;
+    }
+    .muted{color:var(--muted)}
+    .footer{
+      margin-top:18px;
+      padding:16px 6px 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.75;
+    }
+    .legend a{color:#dbe4ff;text-decoration:underline;text-decoration-color:rgba(219,228,255,.34)}
+    .resultbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 16px;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .resultbar strong{color:var(--text)}
+    .empty{
+      display:none;
+      padding:32px 18px;
+      text-align:center;
+      color:var(--muted);
+    }
+    .empty.show{display:block}
+    .empty h3{margin:0 0 8px;color:var(--text)}
+    .hide{display:none !important}
+
+    @media (max-width: 1100px){
+      .topbar{grid-template-columns: repeat(2, minmax(0,1fr));}
+    }
+    @media (max-width: 760px){
+      .wrap{padding:16px 12px 28px}
+      .hero{padding:18px}
+      .toolbar{padding:12px}
+      .topbar{grid-template-columns:1fr}
+      .table-head{flex-direction:column;align-items:flex-start}
+      .table-head .meta{text-align:left}
+      .input,.select{min-width:100%;flex:1 1 100%}
+      .toggle{width:100%;justify-content:space-between}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Kalender jalur prestasi PTN · 2026 & 2027 · dibuat untuk rencana koleksi 3 piagam terbaik</span>
+    <h1>Jadwal jalur prestasi / talent scouting / rapor PTN top Indonesia</h1>
+    <div class="sub">
+      Halaman ini menggabungkan jadwal resmi 2026 dari SNPMB dan sejumlah PTN yang punya jalur berbasis rapor, prestasi, atau talent scouting.
+      Tampilan baru dibuat lebih nyaman dipakai di desktop maupun ponsel, sambil mempertahankan data penting, tautan resmi, dan tanggal asli.
+    </div>
+    <div class="hero-actions">
+      <a class="primary-btn" href="#tabel">Lihat tabel jadwal</a>
+      <a class="ghost-btn" href="#sumber">Lihat sumber resmi</a>
+    </div>
+  </section>
+
+  <div class="topbar" id="stats">
+    <div class="metric">
+      <div class="k">Total entri</div>
+      <div class="v" id="statTotal">—</div>
+      <div class="s">Semua baris jadwal yang dimuat dari data asli.</div>
+    </div>
+    <div class="metric">
+      <div class="k">Kampus unik</div>
+      <div class="v" id="statCampus">—</div>
+      <div class="s">Jumlah kampus berbeda yang tercantum.</div>
+    </div>
+    <div class="metric">
+      <div class="k">Deadline terdekat</div>
+      <div class="v" id="statSoonest">—</div>
+      <div class="s">Deadline 2026 paling cepat pada tabel.</div>
+    </div>
+    <div class="metric">
+      <div class="k">Baris berperingkat</div>
+      <div class="v" id="statRanked">—</div>
+      <div class="s">Entri yang memiliki ranking Indonesia/dunia.</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input class="input" id="search" placeholder="Cari kampus, jalur, atau kata kunci..." />
+    <select class="select" id="filter">
+      <option value="all">Semua jalur</option>
+      <option value="prestasi">Prestasi / rapor / talent scouting</option>
+      <option value="snbp">SNBP</option>
+    </select>
+    <select class="select" id="sortBy" title="Urutkan tampilan">
+      <option value="deadline">Urutkan deadline terdekat</option>
+      <option value="campus">Urutkan nama kampus</option>
+      <option value="ranking">Urutkan ranking Indonesia</option>
+    </select>
+    <label class="toggle" title="Tampilkan tanggal 2026 atau 2027">
+      <span>
+        <input type="checkbox" id="yearSwitch" />
+      </span>
+      <span>
+        Tampilkan prediksi 2027
+        <div class="mini">Menambahkan kolom 2027 tanpa mengubah data asli 2026.</div>
+      </span>
+    </label>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <section class="card" id="tabel">
+    <div class="table-head">
+      <div>
+        <div class="title">Tabel jadwal dan sumber resmi</div>
+        <div class="muted" id="summaryLine">Memuat data…</div>
+      </div>
+      <div class="meta">
+        Tautan admission dan ranking tetap sama seperti data asli.<br />
+        Semua tanggal ditampilkan apa adanya.
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kampus / Jalur</th>
+            <th>Admission</th>
+            <th>2026 dibuka</th>
+            <th>2026 deadline</th>
+            <th>2026 pengumuman</th>
+            <th id="hOpen27" class="hide">2027 dibuka</th>
+            <th id="hDead27" class="hide">2027 deadline</th>
+            <th id="hAnn27" class="hide">2027 pengumuman</th>
+            <th>Peringkat Indonesia</th>
+            <th>Peringkat Dunia</th>
+            <th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="empty" id="emptyState">
+      <h3>Hasil tidak ditemukan</h3>
+      <div>Coba ubah kata kunci pencarian, filter jalur, atau pilihan kampus.</div>
+    </div>
+
+    <div class="resultbar">
+      <div><strong id="statShowing">0</strong> baris tampil dari <strong id="statTotal2">0</strong> entri.</div>
+      <div id="statWindow">Jadwal 2026 tersedia untuk dibandingkan dengan prediksi 2027.</div>
+    </div>
+  </section>
+
+  <div class="footer legend" id="sumber">
+    Sumber jadwal resmi utama: <a href="https://snpmb.id/jadwal-penting" target="_blank" rel="noopener">SNPMB</a>,
+    <a href="https://simak.ui.ac.id/talent-scouting/" target="_blank" rel="noopener">UI Talent Scouting</a>,
+    <a href="https://simak.ui.ac.id/sjp-ta-2026-2027/" target="_blank" rel="noopener">UI SJP</a>,
+    <a href="https://admissions.ugm.ac.id/v26/pendaftaran-mahasiswa-baru-wni/sarjana-sarjana-terapan/ragam-seleksi-sarjana-sarjana-terapan-2025/penelusuran-bibit-unggul-berprestasi-pbub-2026/" target="_blank" rel="noopener">UGM PBUB</a>,
+    <a href="https://www.its.ac.id/admission/smits-flat/" target="_blank" rel="noopener">ITS SMITS FLAT</a>,
+    <a href="https://ppmb.unair.ac.id/id/jadwal-sarjana?menu=schedule" target="_blank" rel="noopener">UNAIR</a>,
+    <a href="https://selma.ub.ac.id/penerimaan-mahasiswa-baru-seleksi-mandiri-jalur-nilai-rapor-dan-prestasi-tahun-akademik-2026-2027/" target="_blank" rel="noopener">UB</a>,
+    <a href="https://smup.unpad.ac.id/" target="_blank" rel="noopener">Unpad</a>,
+    <a href="https://admisi.ipb.ac.id/talenta-ipb/" target="_blank" rel="noopener">IPB</a>,
+    <a href="https://pmb.uny.ac.id/jalur-prestasi-unggul-s1" target="_blank" rel="noopener">UNY Unggul</a>,
+    <a href="https://pmb.uny.ac.id/jalur-prestasi-akademik-s1" target="_blank" rel="noopener">UNY Akademik</a>.
+    <br />
+    Sumber peringkat nasional & dunia yang dipakai di tabel: halaman UniRank tiap kampus (tautan per angka ranking dapat diklik).
+  </div>
+</div>
+
+<script>
+const rows = [{"id": 1, "campus": "SNPMB — SNBP", "route": "Seleksi Nasional Berdasarkan Prestasi", "official_url": "https://snpmb.id/jadwal-penting", "official_label": "Jadwal SNPMB", "open_2026": "2026-01-05", "deadline_2026": "2026-02-18", "announce_2026": "2026-03-31", "open_2027": "2027-01-05", "deadline_2027": "2027-02-18", "announce_2027": "2027-03-31", "country_rank": null, "world_rank": null, "rank_source_label": "", "rank_source_url": "", "note": "Jalur nasional berbasis rapor/kuota sekolah."}, {"id": 2, "campus": "Universitas Indonesia", "route": "Talent Scouting (KKI)", "official_url": "https://simak.ui.ac.id/talent-scouting/", "official_label": "Talent Scouting UI", "open_2026": "2026-02-09", "deadline_2026": "2026-02-27", "announce_2026": "2026-03-20", "open_2027": "2027-02-09", "deadline_2027": "2027-02-27", "announce_2027": "2027-03-20", "country_rank": 1, "world_rank": 392, "rank_source_label": "UniRank UI", "rank_source_url": "https://www.unirank.org/id/uni/universitas-indonesia/", "note": "Berbasis rapor dan prestasi."}, {"id": 3, "campus": "Universitas Gadjah Mada", "route": "PBUB", "official_url": "https://admissions.ugm.ac.id/v26/pendaftaran-mahasiswa-baru-wni/sarjana-sarjana-terapan/ragam-seleksi-sarjana-sarjana-terapan-2025/penelusuran-bibit-unggul-berprestasi-pbub-2026/", "official_label": "PBUB UGM", "open_2026": "2026-04-14", "deadline_2026": "2026-04-29", "announce_2026": "2026-06-04", "open_2027": "2027-04-14", "deadline_2027": "2027-04-29", "announce_2027": "2027-06-04", "country_rank": 2, "world_rank": 558, "rank_source_label": "UniRank UGM", "rank_source_url": "https://www.unirank.org/id/uni/universitas-gadjah-mada/", "note": "Jalur penelusuran bibit unggul berprestasi."}, {"id": 4, "campus": "Institut Teknologi Sepuluh Nopember", "route": "SMITS FLAT", "official_url": "https://www.its.ac.id/admission/smits-flat/", "official_label": "SMITS FLAT ITS", "open_2026": "2026-04-14", "deadline_2026": "2026-05-08", "announce_2026": "2026-05-26", "open_2027": "2027-04-14", "deadline_2027": "2027-05-08", "announce_2027": "2027-05-26", "country_rank": 12, "world_rank": 1176, "rank_source_label": "UniRank ITS", "rank_source_url": "https://www.unirank.org/id/uni/institut-teknologi-sepuluh-nopember/", "note": "Seleksi mandiri berbasis nilai rapor dan prestasi."}, {"id": 5, "campus": "Universitas Airlangga", "route": "SMUA Reguler Jalur Prestasi", "official_url": "https://ppmb.unair.ac.id/id/jadwal-sarjana?menu=schedule", "official_label": "Jadwal Sarjana UNAIR", "open_2026": "2026-04-07", "deadline_2026": "2026-05-28", "announce_2026": "2026-06-03", "open_2027": "2027-04-07", "deadline_2027": "2027-05-28", "announce_2027": "2027-06-03", "country_rank": 9, "world_rank": 1037, "rank_source_label": "UniRank UNAIR", "rank_source_url": "https://www.unirank.org/id/uni/universitas-airlangga/", "note": "Jalur prestasi pada seleksi mandiri reguler."}, {"id": 6, "campus": "Universitas Brawijaya", "route": "SMUB Prestasi + Rapor", "official_url": "https://selma.ub.ac.id/penerimaan-mahasiswa-baru-seleksi-mandiri-jalur-nilai-rapor-dan-prestasi-tahun-akademik-2026-2027/", "official_label": "SMUB Prestasi UB", "open_2026": "2026-05-07", "deadline_2026": "2026-05-28", "announce_2026": null, "open_2027": "2027-05-07", "deadline_2027": "2027-05-28", "announce_2027": null, "country_rank": 7, "world_rank": 867, "rank_source_label": "UniRank UB", "rank_source_url": "https://www.unirank.org/id/uni/universitas-brawijaya/", "note": "Seleksi mandiri jalur nilai rapor dan prestasi."}, {"id": 7, "campus": "Universitas Indonesia", "route": "Seleksi Jalur Prestasi / SJP", "official_url": "https://simak.ui.ac.id/sjp-ta-2026-2027/", "official_label": "SJP UI", "open_2026": "2026-05-04", "deadline_2026": "2026-05-30", "announce_2026": "2026-07-01", "open_2027": "2027-05-04", "deadline_2027": "2027-05-30", "announce_2027": "2027-07-01", "country_rank": 1, "world_rank": 392, "rank_source_label": "UniRank UI", "rank_source_url": "https://www.unirank.org/id/uni/universitas-indonesia/", "note": "Seleksi mandiri berbasis prestasi/medali."}, {"id": 8, "campus": "Universitas Padjadjaran", "route": "SMUP Prestasi Akademik", "official_url": "https://smup.unpad.ac.id/", "official_label": "SMUP Unpad", "open_2026": "2026-04-01", "deadline_2026": "2026-06-02", "announce_2026": "2026-06-20", "open_2027": "2027-04-01", "deadline_2027": "2027-06-02", "announce_2027": "2027-06-20", "country_rank": 11, "world_rank": 1171, "rank_source_label": "UniRank Unpad", "rank_source_url": "https://www.unirank.org/id/uni/universitas-padjadjaran/", "note": "Skema prestasi akademik."}, {"id": 9, "campus": "IPB University", "route": "Talenta IPB", "official_url": "https://admisi.ipb.ac.id/talenta-ipb/", "official_label": "Talenta IPB", "open_2026": "2026-05-06", "deadline_2026": "2026-06-05", "announce_2026": "2026-06-23", "open_2027": "2027-05-06", "deadline_2027": "2027-06-05", "announce_2027": "2027-06-23", "country_rank": 8, "world_rank": 1024, "rank_source_label": "UniRank IPB", "rank_source_url": "https://www.unirank.org/id/uni/ipb-university/", "note": "Mencakup prestasi lomba dan prestasi akademik/rapor."}, {"id": 10, "campus": "Universitas Negeri Yogyakarta", "route": "Prestasi Unggul S1", "official_url": "https://pmb.uny.ac.id/jalur-prestasi-unggul-s1", "official_label": "Prestasi Unggul UNY", "open_2026": "2026-04-06", "deadline_2026": "2026-06-17", "announce_2026": "2026-06-29", "open_2027": "2027-04-06", "deadline_2027": "2027-06-17", "announce_2027": "2027-06-29", "country_rank": 21, "world_rank": 1633, "rank_source_label": "UniRank UNY", "rank_source_url": "https://www.unirank.org/id/uni/state-university-of-yogyakarta/", "note": "Wajib rapor semester 1–5 dan piagam prestasi."}, {"id": 11, "campus": "Universitas Negeri Yogyakarta", "route": "Prestasi Akademik S1", "official_url": "https://pmb.uny.ac.id/jalur-prestasi-akademik-s1", "official_label": "Prestasi Akademik UNY", "open_2026": "2026-04-06", "deadline_2026": "2026-06-17", "announce_2026": "2026-06-29", "open_2027": "2027-04-06", "deadline_2027": "2027-06-17", "announce_2027": "2027-06-29", "country_rank": 21, "world_rank": 1633, "rank_source_label": "UniRank UNY", "rank_source_url": "https://www.unirank.org/id/uni/state-university-of-yogyakarta/", "note": "Sertifikat/piagam bersifat opsional."}];
+
+const months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+
+function fmt(iso){
+  if(!iso) return "—";
+  if(String(iso).includes("?")) return "—";
+  const d = new Date(iso + "T00:00:00");
+  return `${String(d.getDate()).padStart(2,"0")} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+const yearSwitch = document.getElementById("yearSwitch");
+const search = document.getElementById("search");
+const filter = document.getElementById("filter");
+const sortBy = document.getElementById("sortBy");
+const tbody = document.getElementById("tbody");
+const chips = document.getElementById("chips");
+const summaryLine = document.getElementById("summaryLine");
+const statTotal = document.getElementById("statTotal");
+const statCampus = document.getElementById("statCampus");
+const statSoonest = document.getElementById("statSoonest");
+const statRanked = document.getElementById("statRanked");
+const statShowing = document.getElementById("statShowing");
+const statTotal2 = document.getElementById("statTotal2");
+const statWindow = document.getElementById("statWindow");
+const hOpen27 = document.getElementById("hOpen27");
+const hDead27 = document.getElementById("hDead27");
+const hAnn27 = document.getElementById("hAnn27");
+const emptyState = document.getElementById("emptyState");
+
+const campusNames = [...new Set(rows.map(r => r.campus))];
+chips.innerHTML = [
+  `<button class="chip active" data-chip="all">Semua kampus</button>`,
+  ...campusNames.map(c => `<button class="chip" data-chip="${c}">${c}</button>`)
+].join("");
+
+let activeChip = "all";
+chips.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-chip]");
+  if(!btn) return;
+  activeChip = btn.dataset.chip;
+  [...chips.querySelectorAll(".chip")].forEach(x => x.classList.toggle("active", x.dataset.chip === activeChip));
+  render();
+});
+
+function cloneAndSort(data){
+  const sort = sortBy.value;
+  return [...data].sort((a, b) => {
+    if(sort === "campus") {
+      const ac = a.campus.localeCompare(b.campus, "id");
+      if(ac !== 0) return ac;
+      return a.route.localeCompare(b.route, "id");
+    }
+    if(sort === "ranking") {
+      const ar = a.country_rank ?? 9999;
+      const br = b.country_rank ?? 9999;
+      if(ar !== br) return ar - br;
+      const aw = a.world_rank ?? 9999;
+      const bw = b.world_rank ?? 9999;
+      return aw - bw;
+    }
+    const da = a.deadline_2026 || "9999-12-31";
+    const db = b.deadline_2026 || "9999-12-31";
+    if(da !== db) return da.localeCompare(db);
+    return a.campus.localeCompare(b.campus, "id");
+  });
+}
+
+function render(){
+  const q = search.value.trim().toLowerCase();
+  const mode = filter.value;
+  const show2027 = yearSwitch.checked;
+
+  hOpen27.classList.toggle("hide", !show2027);
+  hDead27.classList.toggle("hide", !show2027);
+  hAnn27.classList.toggle("hide", !show2027);
+
+  const filtered = cloneAndSort(rows).filter(r => {
+    const hay = `${r.campus} ${r.route} ${r.note}`.toLowerCase();
+    const matchSearch = !q || hay.includes(q);
+    const matchChip = activeChip === "all" || r.campus === activeChip;
+    const isSnbp = r.route.toLowerCase().includes("seleksi nasional") || r.campus.includes("SNPMB");
+    const isPrestasi = !isSnbp;
+    const matchMode =
+      mode === "all" ? true :
+      mode === "snbp" ? isSnbp :
+      isPrestasi;
+    return matchSearch && matchChip && matchMode;
+  });
+
+  tbody.innerHTML = filtered.map((r, idx) => {
+    const open26 = fmt(r.open_2026);
+    const dead26 = fmt(r.deadline_2026);
+    const ann26 = fmt(r.announce_2026);
+    const open27 = fmt(r.open_2027);
+    const dead27 = fmt(r.deadline_2027);
+    const ann27 = fmt(r.announce_2027);
+
+    const rankIndonesia = r.country_rank == null
+      ? `<span class="badge dim">—</span>`
+      : `<a class="badge" href="${r.rank_source_url}" target="_blank" rel="noopener" title="${r.rank_source_label}">${r.country_rank}</a>`;
+    const rankWorld = r.world_rank == null
+      ? `<span class="badge dim">—</span>`
+      : `<a class="badge secondary" href="${r.rank_source_url}" target="_blank" rel="noopener" title="${r.rank_source_label}">${r.world_rank}</a>`;
+
+    const openCell = show2027 ? `${open26}<br><span class="muted">${open27}</span>` : open26;
+    const deadCell = show2027 ? `${dead26}<br><span class="muted">${dead27}</span>` : dead26;
+    const annCell = show2027 ? `${ann26}<br><span class="muted">${ann27}</span>` : ann26;
+
+    return `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>
+          <div class="campus">${r.campus}</div>
+          <div class="route">${r.route}</div>
+          <div class="small">${r.note}</div>
+        </td>
+        <td><a class="linkbtn" href="${r.official_url}" target="_blank" rel="noopener">${r.official_label} ↗</a></td>
+        <td>${openCell}</td>
+        <td><span class="pill">${deadCell}</span></td>
+        <td>${annCell}</td>
+        <td class="${show2027 ? "" : "hide"}">${open27}</td>
+        <td class="${show2027 ? "" : "hide"}"><span class="pill">${dead27}</span></td>
+        <td class="${show2027 ? "" : "hide"}">${ann27}</td>
+        <td>${rankIndonesia}</td>
+        <td>${rankWorld}</td>
+        <td class="muted">${r.rank_source_url ? `<a href="${r.rank_source_url}" target="_blank" rel="noopener">${r.rank_source_label}</a>` : "—"}</td>
+      </tr>
+    `;
+  }).join("");
+
+  statTotal.textContent = rows.length;
+  statTotal2.textContent = rows.length;
+  statCampus.textContent = new Set(rows.map(r => r.campus)).size;
+  const ranked = rows.filter(r => r.country_rank != null || r.world_rank != null).length;
+  statRanked.textContent = ranked;
+  const deadlines = rows.map(r => r.deadline_2026).filter(Boolean).sort();
+  statSoonest.textContent = deadlines[0] ? fmt(deadlines[0]) : "—";
+
+  summaryLine.textContent = `${filtered.length} hasil tampil · ${show2027 ? "mode 2026 + 2027 aktif" : "mode 2026 aktif"} · diurutkan berdasarkan ${sortBy.options[sortBy.selectedIndex].textContent.toLowerCase()}`;
+  statShowing.textContent = filtered.length;
+  emptyState.classList.toggle("show", filtered.length === 0);
+  statWindow.textContent = show2027
+    ? "Kolom 2027 ditampilkan berdampingan untuk memudahkan perbandingan."
+    : "Gunakan toggle untuk menampilkan prediksi 2027 berdampingan.";
+}
+
+search.addEventListener("input", render);
+filter.addEventListener("change", render);
+sortBy.addEventListener("change", render);
+yearSwitch.addEventListener("change", render);
+render();
+</script>
+</body>
+</html>
